@@ -7,19 +7,17 @@ rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 #+END_SRC
 
 
-#+BEGIN_SRC shell
 ## RHEL/CentOS 6 32-Bit ##
 rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 ## RHEL/CentOS 6 64-Bit ##
 rpm -Uvh wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+
+
+
+yum -y update;
+yum -y install docker-io;
+
 #+END_SRC
-
-
-
-yum -y update
-
-yum -y install docker-io
-
 
 
 *** 2. 复制docker官方的脚本
@@ -170,56 +168,78 @@ rm -rf "$target"
 
 
 *** 3. 执行脚本
+#+BEGIN_SRC shell
 chmod 755 ~/createimage.sh;
-~/createimage.sh centos65base
+~/createimage.sh centos69base
+#+END_SRC
 
 // 注：centos69base是自定义的名字
 
 
 *** 4. 保存镜像文件到文件
+#+BEGIN_SRC shell
 docker images
 // 下面的c30b87670a5f是上面命令中的IMAGE ID
-docker save c30b87670a5f > ~/centos65base.tar
+docker save c30b87670a5f > ~/centos69base.tar
+#+END_SRC
 
 
 ** 使用自制的CentOS镜像
 *** 1. 复制镜像文件到另一个服务器上
 *** 2. 读取image
+#+BEGIN_SRC shell
 docker load < /tmp/centos69base.tar
+#+END_SRC
 *** 3. 重命名
+#+BEGIN_SRC shell
 docker images
 // 下面的c30b87670a5f是上面命令中的IMAGE ID
 docker tag 043d26e059cd centos69base:6.9
+#+END_SRC
 
 *** 4. 执行
+#+BEGIN_SRC shell
 docker run -i -t 043d26e059cd /bin/bash
+#+END_SRC
 
 
 ** 关于运行
-1. 退出不保存数据
+*** 1. 退出不保存数据
 直接使用exit命令，第二次run的时候，镜像的数据不会有任何改变
 
-2. 退出时保存正在运行的数据
+*** 2. 退出时保存正在运行的数据
 在container内部时敲 Crtl-p 然后 Ctrl-q
 
-3. 把修改的镜像保存为新的镜像
+*** 3. 把修改的镜像保存为新的镜像
 - 第一
+#+BEGIN_SRC shell
     docker run -i -t 043d26e059cd /bin/bash
+#+END_SRC
 - 第二
+#+BEGIN_SRC shell
      docker start 043d26e059cd
+#+END_SRC
 - 第三
+#+BEGIN_SRC shell
      docker attach 043d26e059cd
+#+END_SRC
 - 修改镜像，比如安装一个软件emacs
 - 第五
      Ctrl-p Ctrl-q
 - 第六
-     docker commit 043d26e059cd centos65base/emacs:emacs_base
+#+BEGIN_SRC shell
+     docker commit 043d26e059cd centos69base/emacs:emacs_base
+#+END_SRC
 - 第七
-     目前为止，新的镜像已经可以使用，导出可用以下命令(和制作一样的命令)
-         docker save centos69base/emacs:emacs_base > ~/centos69base_emacs.tar
+目前为止，新的镜像已经可以使用，导出可用以下命令(和制作一样的命令)
+#+BEGIN_SRC shell
+docker save centos69base/emacs:emacs_base > ~/centos69base_emacs.tar
+#+END_SRC
 
  4. 进入docker的时候可能会出现ctrl-c停止docker的情况，使用以下命令
+#+BEGIN_SRC shell
     docker attach 043d26e059cd --sig-proxy=false
+#+END_SRC
 
 
 * Docker 安装 easyswoole
