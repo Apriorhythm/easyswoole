@@ -240,5 +240,44 @@ docker save centos69base/emacs:emacs_base > ~/centos69base_emacs.tar
     docker attach 043d26e059cd --sig-proxy=false
 #+END_SRC
 
+ 
+** 常用命令
+#+BEGIN_SRC shell
+# 运行
+docker run -it a9ae834889d1 /bin/bash
 
+# 启动(用于保持修改)
+docker start a9ae834889d1
+
+# 列出所有正在运行的容器
+docker ps -all
+
+# 列出本地镜像
+docker images
+
+#连接到正在运行中的容器
+docker attach a9ae834889d1
+docker attach a9ae834889d1 --sig-proxy=false
+
+# 将镜像保存成tar文件
+docker save a9ae834889d1 > ~/imagename.tar
+
+# 读取本地镜像文件
+docker load < /root/centos69base.tar
+
+#从容器创建一个新的镜像
+docker commit a9ae834889d1 centos69/emacs:emacs_base
+
+# 修改一个镜像的tag
+docker tag a9ae834889d1 centos69base:6.9
+
+# 删除镜像(停止它)
+docker rm a9ae834889d1
+
+# 暂时退出容器，并保持容器运行(使用attach再连上去)
+Ctrl-p + Ctrl-q
+
+# 退出并停止镜像
+exit
+#+END_SRC
 * Docker 安装 easyswoole
