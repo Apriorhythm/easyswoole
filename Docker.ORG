@@ -4,7 +4,6 @@
 #+BEGIN_SRC shell
 # RHEL/CentOS 7 64-Bit ##
 rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-#+END_SRC
 
 
 ## RHEL/CentOS 6 32-Bit ##
