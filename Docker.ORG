@@ -9,7 +9,7 @@ rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ## RHEL/CentOS 6 32-Bit ##
 rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 ## RHEL/CentOS 6 64-Bit ##
-rpm -Uvh wget http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
 
 
 
@@ -241,6 +241,10 @@ docker save centos69base/emacs:emacs_base > ~/centos69base_emacs.tar
 #+END_SRC
 
  
+** 术语
+- 镜像：image，尚未运行的母文件
+- 容器：某个镜像的实例，正在运行
+
 ** 常用命令
 #+BEGIN_SRC shell
 # 运行
@@ -260,7 +264,7 @@ docker attach a9ae834889d1
 docker attach a9ae834889d1 --sig-proxy=false
 
 # 将镜像保存成tar文件
-docker save a9ae834889d1 > ~/imagename.tar
+a9ae834889d1 > ~/imagename.tar
 
 # 读取本地镜像文件
 docker load < /root/centos69base.tar
@@ -271,6 +275,9 @@ docker commit a9ae834889d1 centos69/emacs:emacs_base
 # 修改一个镜像的tag
 docker tag a9ae834889d1 centos69base:6.9
 
+# 修改容器名
+docker rename old容器名  new容器名
+
 # 删除镜像(停止它)
 docker rm a9ae834889d1
 
@@ -280,4 +287,15 @@ Ctrl-p + Ctrl-q
 # 退出并停止镜像
 exit
 #+END_SRC
-* Docker 安装 easyswoole
+** 有用的链接
+- [[https://github.com/Apriorhythm/docker-cheat-sheet][Docker Cheat Sheet]]
+- [[https://docs.docker.com/][Docker Documentation]]
+- [[http://www.runoob.com/docker/docker-tutorial.html][Docker Runoob 教程]]
+
+- [[https://www.youtube.com/watch?v=s948NKa1I1I][Creating a custom CentOS 6.5 Docker container]]
+- [[https://devhints.io/docker][Docker CLI cheatsheet]]
+
+* Troubleshooting
+1. /usr/share/cracklib/pw_dict.pwd: No such file or directory
+yum -y reinstall cracklib-dicts
+

@@ -1,0 +1,85 @@
+#+TITLE: EasySwoole
+#+AUTHOR: Apriorhythm
+
+
+* 安装
+** 环境
+CentOS 7 x64
+** 安装流程
+#+BEGIN_SRC shell
+# 1.安装epel-release
+rpm -ivh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+
+# 2.安装PHP7的rpm源
+
+rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+
+
+# 3. 基础包
+yum -y instal gcc make cmake git
+
+
+# 4.安装PHP7
+
+yum install php71w php71w-mysql php71w-odbc php71w-common php71w-embedded \
+php71w-pgsql php71w-xml  php71w-ldap php71w-fpm php71w-gd php71w-pdo \
+php71w-devel php71w-mbstring php71w-mcrypt php71w-cli php71w-json \
+php71w-imap php71w-bcmath mod_php71w php71w-pear;
+
+# 5. 配置
+vim /etc/php.ini
+/* Apend these content to the end *//
+#+BEGIN_QUOTE
+    [swoole]
+    extension=swoole.so
+#+END_QUOTE
+
+
+# 6. 安装composer
+// Go to https://getcomposer.org/download/ */
+// follow the Command-line installation instruction
+// 这是我的版本(This is my version, it may change now)
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '544e09ee996cdf60ece3804abc52599c22b1f40f4323403c44d44fdfdd586475ca9813a858088ffbc1f233e9b180f061') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+
+// composer.phar is in the current direcotry
+mv composer.phar /usr/local/bin/composer
+
+
+# 7. 安装easyswoole
+composer require easyswoole/easyswoole=2.x-dev
+php vendor/bin/easyswoole install
+php easyswoole start
+
+#+END_SRC
+
+
+
+** Troubleshooting
+1. composer无法连接/composer国内镜像源
+#+BEGIN_SRC shell
+composer config -g repo.packagist composer https://packagist.phpcomposer.com
+#+END_SRC
+
+
+2. Composer install Do not run Composer as root/super 
+#+BEGIN_SRC shell
+// 问题原因：请使用非root账号来执行composer
+// 解决方法：添加一个新用户，并用新用户操作
+useradd newusername
+
+3. 设置密码时/usr/share/cracklib/pw_dict.pwd: No such file or directory, PWOpen: No such file or directory
+// 可能会出现在Docker镜像中
+
+yum -y reinstall cracklib-dicts
+#+END_SRC
+
+
+
+
+
+
+
+
