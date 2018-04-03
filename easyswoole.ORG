@@ -1,4 +1,4 @@
-#+TITLE: EasySwoole
+#+TITLE: easySwoole
 #+AUTHOR: Apriorhythm
 
 
@@ -69,10 +69,12 @@ composer config -g repo.packagist composer https://packagist.phpcomposer.com
 // 问题原因：请使用非root账号来执行composer
 // 解决方法：添加一个新用户，并用新用户操作
 useradd newusername
+#+END_SRC
 
 3. 设置密码时/usr/share/cracklib/pw_dict.pwd: No such file or directory, PWOpen: No such file or directory
 // 可能会出现在Docker镜像中
 
+#+BEGIN_SRC shell
 yum -y reinstall cracklib-dicts
 #+END_SRC
 
